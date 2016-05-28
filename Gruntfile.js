@@ -5,8 +5,10 @@ jasmine: {
   test: {
     src: 'js/app.js',
     options: {
+        keepRunner: true,
         specs: 'jasmine/spec/feedreader.js',
-        vendor: ["http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js",
+        vendor: ["bower_components/jquery/dist/jquery.js",
+                 "bower_components/jasmine-jquery/lib/jasmine-jquery.js",
                  "http://cdn.jsdelivr.net/handlebarsjs/2.0.0/handlebars.min.js",
                  "http://google.com/jsapi"]
     }
