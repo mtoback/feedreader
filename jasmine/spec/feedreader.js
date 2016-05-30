@@ -86,17 +86,17 @@ $(function() {
                  * Remember, loadFeed() is asynchronous so this test will require
                  * the use of Jasmine's beforeEach and asynchronous done() function.
                  */
-                var entryLength;
+                var entry;
                 beforeEach(function(done) {
                     loadFixtures('index.html');
-                    var feed = $('.feed');
+                    feed = $('.feed');
                     loadFeed(0, done);
-                    entryLength = feed.find('.entry').length;
-
+                    feedHtml = feed.html();
+                    entry = feed.find('.entry');
                 });
 
                 it('has been loaded', function(done) {
-                    expect(entryLength).not.toBeLessThan(1);
+                    expect(entry).not.toBeUndefined();
                     done();
                 });
             });
@@ -111,13 +111,14 @@ $(function() {
                 beforeEach(function(done) {
                     loadFixtures('index.html');
                     loadFeed(0, done);
-                    initialFeed = $('.feed').find('.entry-link').attr('href');
+                    var feed = $('.feed');
+                    initialFeed = feed.find('.entry-link');
                     loadFeed(1, done);
-                    secondFeed = $('.feed').find('.entry-link').attr('href');
+                    secondFeed = feed.find('.entry-link');
                 });
 
                 it('has been changed', function(done) {
-                    expect(secondFeed).not.toBe(initialFeed);
+                    expect(secondFeed).not.toEqual(initialFeed);
                     done();
                 });
 
