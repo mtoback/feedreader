@@ -32,6 +32,20 @@ function init() {
     loadFeed(0);
 }
 
+// needed for phantom js... see
+//http://stackoverflow.com/questions/17468611/triggering-click-event-phantomjs
+function click(el){
+    var ev = document.createEvent("MouseEvent");
+    ev.initMouseEvent(
+    "click",
+        true /* bubble */, true /* cancelable */,
+        window, null,
+        0, 0, 0, 0, /* coordinates */
+        false, false, false, false, /* modifier keys */
+        0 /*left*/, null
+    );
+    el.dispatchEvent(ev);
+}
 /* This function performs everything necessary to load a
  * feed using the Google Feed Reader API. It will then
  * perform all of the DOM operations required to display
@@ -120,7 +134,7 @@ $(function() {
     feedList.on('click', 'a', function() {
         var item = $(this);
 
-        $('body').addClass('menu-hidden');
+        $('#container').addClass('menu-hidden');
         loadFeed(item.data('id'));
         return false;
     });
@@ -129,6 +143,6 @@ $(function() {
      * on the body to perform the hiding/showing of our menu.
      */
     menuIcon.on('click', function() {
-        $('body').toggleClass('menu-hidden');
+        $('#container').toggleClass('menu-hidden');
     });
 }());
