@@ -13,10 +13,6 @@ $(function() {
      * a related set of tests. This suite is all about the RSS
      * feeds definitions, the allFeeds variable in our application.
      */
-    // needed for phantom js... see
-    //http://stackoverflow.com/questions/17468611/triggering-click-event-phantomjs
-
-    jasmine.getFixtures().fixturesPath = 'fixtures';
     describe('RSS Feeds', function() {
         /* This is our first test - it tests to make sure that the
          * allFeeds variable has been defined and that it is not
@@ -30,9 +26,12 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
-        /* TODO: Write a test that loops through each feed
+
+        /* A test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
+         *
+         * tested this by verifying that each feed has a url
          */
         it("loop through each feed and ensure url defined", function() {
             allFeeds.forEach(function(feed) {
@@ -41,9 +40,11 @@ $(function() {
             });
         });
 
-        /* TODO: Write a test that loops through each feed
+        /* A test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
+         *
+         * tested by verifying that each feed has a name value defined
          */
         it("loop through each feed and ensure name defined", function() {
             allFeeds.forEach(function(feed) {
@@ -54,87 +55,66 @@ $(function() {
 
     });
 
-    /* TODO: Write a new test suite named "The menu" */
+
     describe('menu', function() {
-        /* TODO: Write a test that ensures the menu element is
+        /* Atest that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
+         *
+         * verify that on initialization, the body has a menu-hidden class
+         * meaning the menu element is hidden on initialization
          */
-        var body, menu_icon;
-        beforeEach(function() {
-            loadFixtures('index.html');
-            body = $('#container');
-            menu_icon = $('.menu-icon-link');
-        });
-
         it("menu element hidden by default", function() {
-            expect(body).toHaveClass('menu-hidden');
-            menu_icon = $('.menu-icon-link');
-            expect(body).toHaveClass('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
-        /* TODO: Write a test that ensures the menu changes
+        /* A test that ensures the menu changes
          * visibility when the menu icon is clicked. This test
          * should have two expectations: does the menu display when
          * clicked and does it hide when clicked again.
+         *
+         * execute a click on the element with the menu icon class, then verify
+         * that the body no longer has the menu-hidden class on it (hence, it is no longer hidden)
          */
+        it("menu changes visibility when the icon is clicked", function() {
+            $('.menu-icon-link').click();
+            expect($('body').hasClass('menu-hidden')).toBeFalsy();
+            $('.menu-icon-link').click();
+            expect($('body').hasClass('menu-hidden')).toBeTruthy();
+        });
     });
-    describe('click test', function() {
-        var menuIcon;
-        beforeEach(function() {
-            //var page = require('webpage').create();
-            loadFixtures('index.html');
-            body = $('#container');
-            //menu_icon = page.evaluate(function() {
-            //    return $("#menuIcon");
-            //});
-            menuIcon = $("#menuIcon");
-            container = document.getElementById("container");
 
-            click(menuIcon);
-        });
-        it("menu changes visibility when the icon is clicked", function(done) {
-            expect(menuIcon).toBeDefined();
-            window.setTimeout(function() {
-                expect(body).toHaveClass('menu-hidden');
-                done();
-            }, 2000);
-        });
-    });
-    /* TODO: Write a new test suite named "Initial Entries" */
     describe('Initial Entries', function() {
-        /* TODO: Write a test that ensures when the loadFeed
+        /* A test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
+         *
+         * intialize this by loading the first feed, which is done on startup.
+         * and if that is the case, verify that that an entry has been loaded
+         * by looking for at least one element with an entry class in it
          */
-        var entry;
         beforeEach(function(done) {
-            loadFixtures('index.html');
-            feed = $('.feed');
             loadFeed(0, done);
-            feedHtml = feed.html();
-            entry = feed.find('.entry');
         });
 
         it('has been loaded', function() {
             expect($('.feed').find('.entry').length).toBeGreaterThan(0);
         });
     });
-    /* TODO: Write a new test suite named "New Feed Selection"
-
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
 
     describe("New Feed Selection", function() {
-        var initialFeed, secondFeed;
+        /* A test that ensures when a new feed is loaded
+         * by the loadFeed function that the content actually changes.
+         * Remember, loadFeed() is asynchronous.
+         * initialize by getting the initial feed then loading a second entry
+         */
+        var initialFeed;
         beforeEach(function(done) {
-            loadFixtures('index.html');
             loadFeed(1, done);
             initialFeed = $('.feed').find('.entry-link').attr('href');
+            alert(initialFeed);
         });
 
         it('has been changed', function(done) {
