@@ -36,7 +36,6 @@ $(function() {
         it("loop through each feed and ensure url defined", function() {
             allFeeds.forEach(function(feed) {
                 expect(feed.url).toBeDefined();
-                expect(feed.url).toBeTruthy();
             });
         });
 
@@ -49,7 +48,6 @@ $(function() {
         it("loop through each feed and ensure name defined", function() {
             allFeeds.forEach(function(feed) {
                 expect(feed.name).toBeDefined();
-                expect(feed.name).toBeTruthy();
             });
         });
 
@@ -100,7 +98,7 @@ $(function() {
         });
 
         it('has been loaded', function() {
-            expect($('.feed').find('.entry').length).toBeGreaterThan(0);
+            expect($('.feed .entry').length).toBeGreaterThan(0);
         });
     });
 
@@ -112,16 +110,20 @@ $(function() {
          */
         var initialFeed;
         beforeEach(function(done) {
-            loadFeed(1, done);
-            initialFeed = $('.feed').find('.entry-link').attr('href');
-            alert(initialFeed);
+            loadFeed(1);
+            setTimeout(function(){
+                initialFeed = $('.feed').find('.entry-link').attr('href');
+                done();
+            }, 2000);
         });
 
         it('has been changed', function(done) {
             loadFeed(0);
-            var secondFeed = $('.feed').find('.entry-link').attr('href');
-            expect(secondFeed).not.toEqual(initialFeed);
-            done();
+            setTimeout(function(){
+                var secondFeed = $('.feed').find('.entry-link').attr('href');
+                expect(secondFeed).not.toEqual(initialFeed);
+                done();
+            }, 2000);
         });
 
     });
