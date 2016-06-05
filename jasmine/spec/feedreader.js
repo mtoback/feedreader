@@ -110,20 +110,17 @@ $(function() {
          */
         var initialFeed;
         beforeEach(function(done) {
-            loadFeed(1);
-            setTimeout(function() {
+            loadFeed(1, function(){
                 initialFeed = $('.feed').find('.entry-link').attr('href');
                 done();
-            }, 2000);
+            });
         });
 
-        it('has been changed', function(done) {
-            loadFeed(0);
-            setTimeout(function() {
+        it('has been changed', function() {
+            loadFeed(0, function(){
                 var secondFeed = $('.feed').find('.entry-link').attr('href');
                 expect(secondFeed).not.toEqual(initialFeed);
-                done();
-            }, 2000);
+            });
         });
 
     });
