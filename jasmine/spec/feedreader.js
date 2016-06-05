@@ -116,10 +116,11 @@ $(function() {
             });
         });
 
-        it('has been changed', function() {
+        it('has been changed', function(done) {
             loadFeed(0, function(){
                 var secondFeed = $('.feed').find('.entry-link').attr('href');
                 expect(secondFeed).not.toEqual(initialFeed);
+                done();
             });
         });
 
